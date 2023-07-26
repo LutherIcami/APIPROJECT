@@ -1,15 +1,14 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const { Op } = require('sequelize');
 const User = require('../models/User');
 const secretKey = 'your-secret-key'; // Replace with a strong secret key
  
-const userController = {
+module.exports = {
   register: async (req, res) => {
     try {
-      const { username, password } = req.body;
+      const { username, password ,role} = req.body;
       const hashedPassword = await bcrypt.hash(password, 10);
-      const user = await User.create({ username, password: hashedPassword });
+      const user = await User.create({ username, password: hashedPassword,role });
       res.status(201).json({ message: 'Registration successful', user });
     } catch (error) {
       res.status(500).json({ error: 'Failed to register user' });
@@ -51,4 +50,3 @@ const userController = {
   },
 };
  
-module.exports = userController;
